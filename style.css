@@ -3,6 +3,9 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
@@ -12,6 +15,16 @@ body {
     background: white;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .search-container {
@@ -48,15 +61,22 @@ button:hover {
     grid-template-columns: 1fr 1fr;
     gap: 15px;
     margin-top: 15px;
+    flex: 1;
 }
 
 .search-results, .selected-artists {
     background: #f9f9f9;
     padding: 12px;
     border-radius: 4px;
-    height: fit-content;
-    max-height: 60vh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#results, #selected-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
 }
 
 .selected-artists {
@@ -275,6 +295,11 @@ h2 {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.username {
+    color: #333;
+    font-size: 0.9em;
 }
 
 .profile-picture {

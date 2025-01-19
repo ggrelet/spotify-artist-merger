@@ -20,6 +20,7 @@ const loginButton = document.getElementById('login-button');
 const overlayLoginButton = document.getElementById('overlay-login-button');
 const loginOverlay = document.getElementById('login-overlay');
 const profilePicture = document.getElementById('profile-picture');
+const usernameElement = document.getElementById('username');
 const playlistWidget = document.getElementById('playlist-widget');
 const mergeButtonContainer = document.querySelector('.merge-button-container');
 
@@ -132,18 +133,26 @@ async function updateUserProfile() {
                 'Authorization': `Bearer ${userAccessToken}`
             }
         });
-        
-        if (!response.ok) {
-            throw new Error('Failed to fetch user profile');
-        }
-        
         const data = await response.json();
-        userId = data.id; // Store the user ID
         
-        if (data.images && data.images[0]) {
+        // Update profile picture
+        if (data.images && data.images.length > 0) {
             profilePicture.src = data.images[0].url;
-            profilePicture.classList.remove('hidden');
         }
+        
+        // Update username
+        if (data.display_name) {
+            usernameElement.textContent = `Logged in as ${data.display_name}`;
+            usernameElement.classList.remove('hidden');
+        }
+        
+        profilePicture.classList.remove('hidden');
+        loginButton.classList.add('hidden');
+        
+        // Store user ID for playlist creation
+        userId = data.id;
+        
+        document.querySelector('.main-content').classList.remove('needs-auth');
     } catch (error) {
         console.error('Error fetching user profile:', error);
     }
@@ -421,9 +430,12 @@ async function createMergedPlaylist() {
         }
 
         // Create playlist name
-        const playlistName = 'MergedMix: ' + Array.from(selectedArtists.values())
-            .map(artist => artist.name)
-            .join(' + ');
+        const artistNames = Array.from(selectedArtists.values())
+            .map(artist => artist.name);
+        const playlistName = 'MergedMix: ' + 
+            (artistNames.length > 3 
+                ? artistNames.slice(0, 3).join(', ') + ' and more...'
+                : artistNames.join(', '));
 
         console.log('Creating playlist:', playlistName);
         
