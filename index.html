@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Spotify Artist Search</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Search for Artists</h1>
+            <div class="user-section">
+                <img id="profile-picture" class="profile-picture hidden" alt="Profile Picture">
+                <button id="login-button" class="spotify-login">Login with Spotify</button>
+            </div>
+        </div>
+        <div class="main-content needs-auth">
+            <div class="search-container">
+                <input type="text" id="artist-search" placeholder="Enter artist name...">
+                <button id="search-button">Search</button>
+                <div id="autocomplete-list" class="autocomplete-items"></div>
+            </div>
+            <div class="content-wrapper">
+                <div class="search-results">
+                    <h2>Search Results</h2>
+                    <div id="results"></div>
+                </div>
+                <div class="selected-artists">
+                    <h2>Selected Artists</h2>
+                    <div id="selected-list"></div>
+                    <div class="merge-button-container">
+                        <button id="merge-button" class="merge-button">Merge Artists</button>
+                        <p id="merge-status" class="merge-status">Select at least 3 artists</p>
+                    </div>
+                    <div id="playlist-widget" class="playlist-widget hidden"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="login-overlay" class="login-overlay hidden">
+        <div class="login-message">
+            <h2>Login Required</h2>
+            <p>Please login with Spotify to create playlists</p>
+            <button id="overlay-login-button" class="spotify-login">Login with Spotify</button>
+        </div>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
