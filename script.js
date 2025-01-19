@@ -55,7 +55,7 @@ loginButton.addEventListener('click', async () => {
     const params = new URLSearchParams({
         client_id: config.clientId,
         response_type: 'code',
-        redirect_uri: 'http://localhost:8000/',
+        redirect_uri: 'https://ggrelet.github.io/spotify-artist-merger/',
         code_challenge_method: 'S256',
         code_challenge: codeChallenge,
         scope: scope,
@@ -105,7 +105,7 @@ async function handleCallback() {
                 client_id: config.clientId,
                 grant_type: 'authorization_code',
                 code: code,
-                redirect_uri: 'http://localhost:8000/',  
+                redirect_uri: 'https://ggrelet.github.io/spotify-artist-merger/',  
                 code_verifier: codeVerifier,
             }),
         });
