@@ -55,7 +55,7 @@ loginButton.addEventListener('click', async () => {
     const params = new URLSearchParams({
         client_id: config.clientId,
         response_type: 'code',
-        redirect_uri: 'https://ggrelet.github.io/spotify-artist-merger/',
+        redirect_uri: config.redirectUri,
         code_challenge_method: 'S256',
         code_challenge: codeChallenge,
         scope: scope,
@@ -105,7 +105,7 @@ async function handleCallback() {
                 client_id: config.clientId,
                 grant_type: 'authorization_code',
                 code: code,
-                redirect_uri: 'https://ggrelet.github.io/spotify-artist-merger/',  
+                redirect_uri: config.redirectUri,
                 code_verifier: codeVerifier,
             }),
         });
@@ -173,10 +173,18 @@ async function searchArtists(query) {
     }
 }
 
+function getInitials(name) {
+    return name
+        .split(' ')
+        .map(word => word[0])
+        .join('');
+}
+
 function createArtistCard(artist, isSelected = false) {
     const artistDiv = document.createElement('div');
     artistDiv.className = 'artist-card';
-    const imageUrl = artist.images[0]?.url || 'placeholder-image-url';
+    
+    const imageUrl = artist.images[0]?.url || null;
     
     const infoDiv = document.createElement('div');
     infoDiv.className = 'artist-info';
@@ -194,7 +202,6 @@ function createArtistCard(artist, isSelected = false) {
     const followersText = document.createElement('p');
     followersText.textContent = `${artist.followers.total.toLocaleString()} followers`;
     
-    // Create genres with pills
     const genresContainer = document.createElement('div');
     genresContainer.className = 'genres';
     if (artist.genres.length) {
@@ -206,15 +213,21 @@ function createArtistCard(artist, isSelected = false) {
         });
     }
     
-    const img = document.createElement('img');
-    img.src = imageUrl;
-    img.alt = artist.name;
-    
-    // Make image clickable too
     const imgLink = document.createElement('a');
     imgLink.href = artist.external_urls.spotify;
     imgLink.target = '_blank';
-    imgLink.appendChild(img);
+
+    if (imageUrl) {
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = artist.name;
+        imgLink.appendChild(img);
+    } else {
+        const initialsDiv = document.createElement('div');
+        initialsDiv.className = 'initial-avatar';
+        initialsDiv.textContent = getInitials(artist.name);
+        imgLink.appendChild(initialsDiv);
+    }
     
     const button = document.createElement('button');
     if (!isSelected) {
